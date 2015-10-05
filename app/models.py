@@ -36,6 +36,7 @@ class Product(models.Model):
 		('2', 'EUR'),
 		('3', 'RMB'),
 	)
+	vendor = models.ForeignKey('Vendor')
 
 class Transaction(models.Model):
 	amount = models.IntegerField()
