@@ -4,7 +4,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import render
 
 
-class Vendor(View):
+class vendor(View):
 	def get(self, request, *args, **kwargs):
 		return HttpResponse("herro")
 	# def post(self, request, *args, **kwargs):
