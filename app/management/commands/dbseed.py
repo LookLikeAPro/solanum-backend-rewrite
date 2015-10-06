@@ -11,9 +11,9 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		self.seedUser()
 		self.seedVendor()
+		self.seedVendorManagement()
 		self.seedProduct()
 		self.seedTransaction()
-
 		self.stdout.write('Seeding complete')
 
 	def seedUser(self):
@@ -28,10 +28,15 @@ class Command(BaseCommand):
 			email = 'shop'+str(i)+'@solanum.com'
 			description = 'test'
 			phone_number = '111111'+str(i)
-			# user = models.User.objects.get(name=i)
-			newVendor = models.Vendor.objects.create(name=name, email=email, description=description, phone_number=phone_number, longitude=0, latitude=0, timezone=0)
-			# newVendor.users.add(user)
-			newVendor.save()
+			models.Vendor.objects.create(name=name, email=email, description=description, phone_number=phone_number, longitude=0, latitude=0, timezone=0).save()
+
+	def seedVendorManagement(self):
+		#Do not use "Through" type ManyToMany if it is only two columns. This is more work.
+		#This exists because there are intricacies in relationship between venor and user (permission level etc)
+		for i in range(0, 20):
+			user = models.User.objects.get(name=str(i))
+			vendor = models.Vendor.objects.get(name='shop'+str(i))
+			models.VendorManagement.objects.create(user=user, vendor=vendor).save()
 
 	def seedProduct(self):
 		for i in range(0, 200):

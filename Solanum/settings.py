@@ -96,8 +96,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Link
+APPEND_SLASH = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+SETTINGS_DIR = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 STATIC_URL = '/static/'
+STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
+
+STATICFILES_DIRS = (
+	STATIC_PATH,
+)
