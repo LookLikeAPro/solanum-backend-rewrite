@@ -1,12 +1,9 @@
 from django.utils.functional import SimpleLazyObject
+from app.models import User
 
 class AuthMiddleware(object):
 	def process_request(self, request):
 		assert hasattr(request, 'session'), (
-			"The Django authentication middleware requires session middleware "
-			"to be installed. Edit your MIDDLEWARE_CLASSES setting to insert "
-			"'django.contrib.sessions.middleware.SessionMiddleware' before "
-			"'django.contrib.auth.middleware.AuthenticationMiddleware'."
+			"AuthMiddleware unable to find session"
 		)
-		# request.user = SimpleLazyObject(lambda: get_user(request))
-		request.user = 1
+		request.user = SimpleLazyObject(lambda: User.objects.get(email="test@test.com"))
