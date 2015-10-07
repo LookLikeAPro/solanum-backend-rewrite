@@ -1,1 +1,1 @@
-from vendor import vendor
+__all__ = ["auth", "vendor"]
