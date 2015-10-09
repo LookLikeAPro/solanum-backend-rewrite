@@ -5,14 +5,15 @@ module.exports = function (options) {
 
 	// require the page rendering logic
 	var Renderer = options.prerender ?
-	require("../build/prerender/main.js") :
+	require("../static/prerender/main.js") :
 	require("../client-bootstrap/SimpleRenderer.js");
 	Renderer = require("../client-bootstrap/SimpleRenderer.js");
 
 	// load bundle information from stats
-	var stats = require("../public/stats.json");
+	var stats = require("../static/client/stats.json");
 
-	var publicPath = options.prerender ? '/_assets/' : stats.publicPath;
+	// var publicPath = options.prerender ? '/_assets/' : stats.publicPath;
+	var publicPath = stats.publicPath;
 
 	var renderer = new Renderer({
 		styleUrl: options.separateStylesheet && (publicPath + "main.css?" + stats.hash),
@@ -23,11 +24,9 @@ module.exports = function (options) {
 	var app = express();
 
 	// serve the static assets
-	app.use("/_assets", express.static(path.join(__dirname, "..", "public", "client"), {
+	app.use("/static", express.static(path.join(__dirname, "..", "static/", "client"), {
 		// We can cache them as they include hashes
 		maxAge: "200d"
-	}));
-	app.use("/", express.static(path.join(__dirname, "..", "public"), {
 	}));
 
 	app.use(bodyParser.json());

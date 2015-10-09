@@ -15,7 +15,7 @@ class HomePage extends Component {
 		const {currentUser} = this.props;
 
 		return (<div>
-			<h2>Homepage!!!</h2>
+			<h2>Homepage</h2>
 			<p>This is the homepage.</p>
 			<p>{JSON.stringify(currentUser)}</p>
 			<button onClick={this._onClick}></button>

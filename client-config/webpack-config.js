@@ -50,10 +50,10 @@ module.exports = function (options) {
 	var extensions = ["", ".web.js", ".js", ".jsx"];
 	var root = path.join(__dirname, "../client-app");
 	var publicPath = options.devServer ?
-		"http://localhost:2992/_assets/" :
-		"/_assets/client/";
+		"http://localhost:2992/static/" :
+		"/static/client/";
 	var output = {
-		path: path.join(__dirname, "../public", options.prerender ? "prerender" : "client"),
+		path: path.join(__dirname, "../static", options.prerender ? "prerender" : "client"),
 		publicPath: publicPath,
 		filename: "[name].js" + (options.longTermCaching && !options.prerender ? "?[chunkhash]" : ""),
 		chunkFilename: (options.devServer ? "[id].js" : "[name].js") + (options.longTermCaching && !options.prerender ? "?[chunkhash]" : ""),
@@ -70,7 +70,7 @@ module.exports = function (options) {
 		new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
 	];
 	if (options.prerender) {
-		plugins.push(new StatsPlugin(path.join(__dirname, "../public", "stats.prerender.json"), {
+		plugins.push(new StatsPlugin(path.join(__dirname, "../static/prerender", "stats.json"), {
 			chunkModules: true,
 			exclude: excludeFromStats
 		}));
@@ -85,7 +85,7 @@ module.exports = function (options) {
 		plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
 	}
 	else {
-		plugins.push(new StatsPlugin(path.join(__dirname, "../public", "stats.json"), {
+		plugins.push(new StatsPlugin(path.join(__dirname, "../static/client", "stats.json"), {
 			chunkModules: true,
 			exclude: excludeFromStats
 		}));

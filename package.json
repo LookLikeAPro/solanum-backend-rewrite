@@ -24,7 +24,7 @@
 		"markdown-loader": "^0.1.6",
 		"node-sass": "^3.3.2",
 		"null-loader": "^0.1.0",
-		"react": "^0.13.1",
+		"react": "^0.14.0",
 		"react-hot-loader": "^1.2.9",
 		"react-proxy-loader": "^0.3.1",
 		"react-redux": "^3.0.0",
