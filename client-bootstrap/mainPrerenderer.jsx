@@ -17,9 +17,7 @@ export default class MainRenderer {
 		match({routes, location}, (err, redirectLocation, renderProps) => {
 			const InitialComponent = (
 				<Provider store={store}>
-					{() =>
-						<RoutingContext {...renderProps} children={routes} history={history} location={location} />
-					}
+					<RoutingContext {...renderProps} children={routes} history={history} location={location} />
 				</Provider>
 			);
 			const componentHTML = React.renderToString(InitialComponent);
