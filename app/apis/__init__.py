@@ -1,1 +1,6 @@
-__all__ = ["auth", "vendor", "user"]
+__all__ = [
+	"auth",
+	"vendor",
+	"user",
+	"transaction"
+]

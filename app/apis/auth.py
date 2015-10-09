@@ -5,13 +5,12 @@ from app.models import User
 
 class login(View):
 	def get(self, request, *args, **kwargs):
-		# need to actually implement session or token
 		if (not 'email' in request.GET) or (not 'password' in request.GET):
 			return JsonResponse({'error':{'message':'Invalid parameters'}})
 		email = request.GET['email']
 		password = request.GET['password']
-		user = User.objects.get(email=email)
-		if user.password != password:
+		user = User.objects.filter(email=email).first()
+		if (not user) or (user.password != password):
 			return JsonResponse({'error':{'message':'Invalid username or password'}})
 		request.session['user'] = user.email
 		return JsonResponse({
