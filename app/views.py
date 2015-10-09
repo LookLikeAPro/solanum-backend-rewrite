@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template import RequestContext, loader
-from django.shortcuts import render
 import json
 from subprocess import call
 
