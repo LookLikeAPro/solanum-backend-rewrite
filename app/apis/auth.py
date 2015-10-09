@@ -13,6 +13,7 @@ class login(View):
 		user = User.objects.get(email=email)
 		if user.password != password:
 			return JsonResponse({'error':{'message':'Invalid username or password'}})
+		request.session['user'] = user.email
 		return JsonResponse({
 			"email": user.email,
 			"name": user.name

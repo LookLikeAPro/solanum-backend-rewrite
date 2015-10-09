@@ -6,4 +6,4 @@ class AuthMiddleware(object):
 		assert hasattr(request, 'session'), (
 			"AuthMiddleware unable to find session"
 		)
-		request.user = SimpleLazyObject(lambda: User.objects.get(email="test@test.com"))
+		request.user = SimpleLazyObject(lambda: User.objects.get(email=request.session['user']))
