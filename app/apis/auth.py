@@ -21,4 +21,9 @@ class login(View):
 
 class logout(View):
 	def get(self, request, *args, **kwargs):
-		return HttpResponse("herro")
+		try:
+			del request.session['user']
+		except KeyError:
+			return JsonResponse({'status':'success'})
+		return JsonResponse({'status':'success'})
+
