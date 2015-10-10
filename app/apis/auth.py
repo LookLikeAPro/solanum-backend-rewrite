@@ -32,8 +32,11 @@ class signup(View):
 			return JsonResponse({'error':{'message':'Invalid parameters'}})
 		email = request.GET['email']
 		password = request.GET['password']
-		user = User.objects.create(name="", email=email, password=password)
-		user.save();
+		try:
+			user = User.objects.create(name="", email=email, password=password)
+			user.save()
+		except:
+			return JsonResponse({'error':{'message':'Signup Failed'}})
 		request.session['user'] = user.email
 		return JsonResponse({
 			"status": "success"

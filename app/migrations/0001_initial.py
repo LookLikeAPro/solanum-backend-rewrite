@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -13,14 +13,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CartItem',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('count', models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=200)),
                 ('description', models.CharField(max_length=200)),
                 ('price', models.IntegerField()),
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Transaction',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('amount', models.IntegerField()),
                 ('date', models.DateTimeField(auto_now_add=True)),
             ],
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TransactionItem',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('amount', models.IntegerField()),
                 ('count', models.IntegerField()),
                 ('product', models.ForeignKey(to='app.Product')),
@@ -47,16 +47,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=200)),
                 ('password', models.CharField(max_length=200)),
-                ('email', models.EmailField(max_length=254)),
+                ('email', models.EmailField(max_length=254, unique=True)),
             ],
         ),
         migrations.CreateModel(
             name='Vendor',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=200)),
                 ('link', models.CharField(max_length=200)),
                 ('description', models.CharField(max_length=200)),
@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='VendorManagement',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('user', models.ForeignKey(to='app.User')),
                 ('vendor', models.ForeignKey(to='app.Vendor')),
             ],
@@ -83,12 +83,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='vendor',
             name='users',
-            field=models.ManyToManyField(to='app.User', through='app.VendorManagement'),
+            field=models.ManyToManyField(through='app.VendorManagement', to='app.User'),
         ),
         migrations.AddField(
             model_name='user',
             name='vendors',
-            field=models.ManyToManyField(to='app.Vendor', through='app.VendorManagement'),
+            field=models.ManyToManyField(through='app.VendorManagement', to='app.Vendor'),
         ),
         migrations.AddField(
             model_name='transaction',
