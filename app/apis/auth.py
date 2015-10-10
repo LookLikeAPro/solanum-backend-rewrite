@@ -26,3 +26,15 @@ class logout(View):
 			return JsonResponse({'status':'success'})
 		return JsonResponse({'status':'success'})
 
+class signup(View):
+	def get(self, request, *args, **kwargs):
+		if (not 'email' in request.GET) or (not 'password' in request.GET):
+			return JsonResponse({'error':{'message':'Invalid parameters'}})
+		email = request.GET['email']
+		password = request.GET['password']
+		user = User.objects.create(name="", email=email, password=password)
+		user.save();
+		request.session['user'] = user.email
+		return JsonResponse({
+			"status": "success"
+		})
