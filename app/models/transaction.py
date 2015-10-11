@@ -5,3 +5,5 @@ class Transaction(models.Model):
 	date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey('User')
 	vendor = models.ForeignKey('Vendor')
+
+# Transaction.objects.get(id=2404).transactionitem_set.all()
