@@ -13,11 +13,12 @@
     "babel-loader": "^5.0.0",
     "body-parser": "^1.9.3",
     "css-loader": "^0.19.0",
+    "exports-loader": "^0.6.2",
     "express": "^4.7.2",
     "extract-text-webpack-plugin": "^0.8.0",
     "file-loader": "^0.8.1",
     "html-loader": "^0.3.0",
-    "isomorphic-fetch": "^2.1.1",
+    "imports-loader": "^0.6.4",
     "key-mirror-nested": "^1.2.4",
     "less": "^2.1.2",
     "less-loader": "^2.0.0",
@@ -38,7 +39,8 @@
     "url-loader": "^0.5.5",
     "uuid": "^2.0.1",
     "webpack": "^1.8.5",
-    "webpack-dev-server": "^1.4.7"
+    "webpack-dev-server": "^1.4.7",
+    "whatwg-fetch": "^0.9.0"
   },
   "devDependencies": {},
   "eslintConfig": {

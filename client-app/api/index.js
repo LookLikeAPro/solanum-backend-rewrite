@@ -1,39 +1,3 @@
-// import constants from "../flux/constants.js";
-// import request from "superagent";
-// import appDispatcher from "../flux/appDispatcher.js";
-import fetch from "isomorphic-fetch";
-
-// var Api = {};
-
-// Api[constants.APIKEY.USER.CURRENT] = function(){
-// 	return makePromise(request.get("/api/user/current"));
-// };
-
-// Api[constants.APIKEY.USER.LOGIN] = function(params) {
-// 	return makePromise(request
-// 		.get("/api/auth/login")
-// 		.set("email", params.email)
-// 		.set("password", params.password));
-// };
-
-// Api[constants.APIKEY.TRANSACTION.PAGINATE] = function(params){
-// 	return makePromise(request
-// 		.get("/api/transaction/paginate/"+params.page||1)
-// 		.query({detailed: "true"}));
-// };
-
-// Api[constants.APIKEY.VENDOR.BY_LINK] = function(params){
-// 	return makePromise(request.get("/api/vendor/by-link/"+params.link));
-// };
-
-// Api[constants.APIKEY.VENDOR.NEARBY.PAGINATE] = function (params) {
-// 	return makePromise(request.get("/api/vendor/nearby/paginate/1")
-// 		.query({
-// 			latitude: params.latitude,
-// 			longitude: params.longitude
-// 		}));
-// };
-
 // function makePromise(request){
 // 	return new Promise(function(resolve, reject) {
 // 		request.end(function(err, res) {

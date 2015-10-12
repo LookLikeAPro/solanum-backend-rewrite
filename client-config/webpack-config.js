@@ -5,10 +5,12 @@ var StatsPlugin = require("stats-webpack-plugin");
 var loadersByExtension = require("../client-bootstrap/loadersByExtension");
 
 module.exports = function (options) {
+	//=====================ENTRY======================
 	var entry = {
 		main: options.prerender ? "./client-bootstrap/mainPrerenderer" : "./client-bootstrap/mainApp"
 		// second: options.prerender ? "./config/secondPrerenderer" : "./config/secondApp"
 	};
+	//=====================LOADERS======================
 	var loaders = {
 		jsx: options.hotComponents ? ["react-hot-loader", "babel-loader?stage=0"] : "babel-loader?stage=0",
 		js: {
@@ -26,14 +28,29 @@ module.exports = function (options) {
 		html: "html-loader",
 		"md|markdown": ["html-loader", "markdown-loader"]
 	};
-	var cssLoader = options.minimize ? "css-loader?module" : "css-loader?module&localIdentName=[path][name]---[local]---[hash:base64:5]";
-	cssLoader = "css-loader!autoprefixer-loader";
+	//CSS Modules
+	//var cssLoader = options.minimize ? "css-loader?module" : "css-loader?module&localIdentName=[path][name]---[local]---[hash:base64:5]";
+	//Traditional CSS
+	var cssLoader = "css-loader!autoprefixer-loader";
 	var stylesheetLoaders = {
 		css: cssLoader,
 		less: [cssLoader, "less-loader"],
 		styl: [cssLoader, "stylus-loader"],
 		"scss|sass": [cssLoader, "sass-loader"]
 	};
+	Object.keys(stylesheetLoaders).forEach(function (ext) {
+		var stylesheetLoader = stylesheetLoaders[ext];
+		if (Array.isArray(stylesheetLoader)) stylesheetLoader = stylesheetLoader.join("!");
+		if (options.prerender) {
+			stylesheetLoaders[ext] = stylesheetLoader.replace(/^css-loader/, "css-loader/locals");
+		}
+		else if (options.separateStylesheet) {
+			stylesheetLoaders[ext] = ExtractTextPlugin.extract("style-loader", stylesheetLoader);
+		}
+		else {
+			stylesheetLoaders[ext] = "style-loader!" + stylesheetLoader;
+		}
+	});
 	var additionalLoaders = [
 		// { test: /some-reg-exp$/, loader: "any-loader" }
 	];
@@ -46,6 +63,7 @@ module.exports = function (options) {
 	var externals = [
 
 	];
+	//=====================PATHS======================
 	var modulesDirectories = ["web_modules", "node_modules"];
 	var extensions = ["", ".web.js", ".js", ".jsx"];
 	var root = path.join(__dirname, "../client-app");
@@ -61,61 +79,23 @@ module.exports = function (options) {
 		libraryTarget: options.prerender ? "commonjs2" : undefined,
 		pathinfo: options.debug || options.prerender
 	};
-	var excludeFromStats = [
-		/node_modules[\\\/]react(-router)?[\\\/]/,
-		/node_modules[\\\/]items-store[\\\/]/
-	];
+	//=====================PLUGINS======================
 	var plugins = [
 		new webpack.PrefetchPlugin("react"),
-		new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
+		new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment"),
+		new webpack.ProvidePlugin({
+			fetch: "imports?this=>global!exports?global.fetch!whatwg-fetch"
+		})
 	];
-	if (options.prerender) {
-		plugins.push(new StatsPlugin(path.join(__dirname, "../static/prerender", "stats.json"), {
-			chunkModules: true,
-			exclude: excludeFromStats
-		}));
-		aliasLoader["react-proxy$"] = "react-proxy/unavailable";
-		aliasLoader["react-proxy-loader$"] = "react-proxy-loader/unavailable";
-		externals.push(
-			/^react(\/.*)?$/,
-			/^reflux(\/.*)?$/,
-			"async",
-			"isomorphic-fetch"
-		);
-		plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
-	}
-	else {
-		plugins.push(new StatsPlugin(path.join(__dirname, "../static/client", "stats.json"), {
-			chunkModules: true,
-			exclude: excludeFromStats
-		}));
-	}
 	if (options.commonsChunk) {
 		plugins.push(new webpack.optimize.CommonsChunkPlugin("commons", "commons.js" + (options.longTermCaching && !options.prerender ? "?[chunkhash]" : "")));
 	}
 	var asyncLoader = {
-		// test: require("./client-app/route-handlers/async").map(function(name) {
-		// 	return path.join(__dirname, "client-app", "route-handlers", name);
-		// }),
 		test: require("../client-app/containers/async").map(function (name) {
 			return path.join(__dirname, "../client-app", "containers", name);
 		}),
 		loader: options.prerender ? "react-proxy-loader/unavailable" : "react-proxy-loader"
 	};
-
-	Object.keys(stylesheetLoaders).forEach(function (ext) {
-		var stylesheetLoader = stylesheetLoaders[ext];
-		if (Array.isArray(stylesheetLoader)) stylesheetLoader = stylesheetLoader.join("!");
-		if (options.prerender) {
-			stylesheetLoaders[ext] = stylesheetLoader.replace(/^css-loader/, "css-loader/locals");
-		}
-		else if (options.separateStylesheet) {
-			stylesheetLoaders[ext] = ExtractTextPlugin.extract("style-loader", stylesheetLoader);
-		}
-		else {
-			stylesheetLoaders[ext] = "style-loader!" + stylesheetLoader;
-		}
-	});
 	if (options.separateStylesheet && !options.prerender) {
 		plugins.push(new ExtractTextPlugin("[name].css" + (options.longTermCaching ? "?[contenthash]" : "")));
 	}
@@ -138,6 +118,31 @@ module.exports = function (options) {
 			}),
 			new webpack.NoErrorsPlugin()
 		);
+	}
+	//=====================STATS======================
+	var excludeFromStats = [
+		/node_modules[\\\/]react(-router)?[\\\/]/,
+		/node_modules[\\\/]items-store[\\\/]/
+	];
+	if (options.prerender) {
+		plugins.push(new StatsPlugin(path.join(__dirname, "../static/prerender", "stats.json"), {
+			chunkModules: true,
+			exclude: excludeFromStats
+		}));
+		aliasLoader["react-proxy$"] = "react-proxy/unavailable";
+		aliasLoader["react-proxy-loader$"] = "react-proxy-loader/unavailable";
+		externals.push(
+			/^react(\/.*)?$/,
+			/^reflux(\/.*)?$/,
+			"async"
+		);
+		plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
+	}
+	else {
+		plugins.push(new StatsPlugin(path.join(__dirname, "../static/client", "stats.json"), {
+			chunkModules: true,
+			exclude: excludeFromStats
+		}));
 	}
 
 	return {

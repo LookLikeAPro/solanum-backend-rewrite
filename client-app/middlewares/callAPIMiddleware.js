@@ -26,7 +26,7 @@ function callAPIMiddleware({ dispatch, getState }) {
 			}
 
 			if (!shouldCallAPI(getState())) {
-				return;
+				return null;
 			}
 
 			const [requestType, successType, failureType] = types;
@@ -39,7 +39,7 @@ function callAPIMiddleware({ dispatch, getState }) {
 				.then(req => req.json())
 				.then(json => {
 					if (json.error) {
-						dispatch(Object.assign({}, payload,{
+						dispatch(Object.assign({}, payload, {
 							type: failureType,
 							error: json.error
 						}));
