@@ -182,7 +182,7 @@
       "space-before-function-paren": [
         1,
         {
-          "anonymous": "always",
+          "anonymous": "never",
           "named": "never"
         }
       ],

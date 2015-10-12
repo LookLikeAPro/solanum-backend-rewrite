@@ -2,12 +2,12 @@ var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var StatsPlugin = require("stats-webpack-plugin");
-var loadersByExtension = require("../client-bootstrap/loadersByExtension");
+var loadersByExtension = require("./loadersByExtension");
 
-module.exports = function (options) {
+module.exports = function(options) {
 	//=====================ENTRY======================
 	var entry = {
-		main: options.prerender ? "./client-bootstrap/mainPrerenderer" : "./client-bootstrap/mainApp"
+		main: options.prerender ? "./client-app/mainPrerenderer" : "./client-app/mainApp"
 		// second: options.prerender ? "./config/secondPrerenderer" : "./config/secondApp"
 	};
 	//=====================LOADERS======================
@@ -38,7 +38,7 @@ module.exports = function (options) {
 		styl: [cssLoader, "stylus-loader"],
 		"scss|sass": [cssLoader, "sass-loader"]
 	};
-	Object.keys(stylesheetLoaders).forEach(function (ext) {
+	Object.keys(stylesheetLoaders).forEach(function(ext) {
 		var stylesheetLoader = stylesheetLoaders[ext];
 		if (Array.isArray(stylesheetLoader)) stylesheetLoader = stylesheetLoader.join("!");
 		if (options.prerender) {
@@ -91,7 +91,7 @@ module.exports = function (options) {
 		plugins.push(new webpack.optimize.CommonsChunkPlugin("commons", "commons.js" + (options.longTermCaching && !options.prerender ? "?[chunkhash]" : "")));
 	}
 	var asyncLoader = {
-		test: require("../client-app/containers/async").map(function (name) {
+		test: require("../client-app/containers/async").map(function(name) {
 			return path.join(__dirname, "../client-app", "containers", name);
 		}),
 		loader: options.prerender ? "react-proxy-loader/unavailable" : "react-proxy-loader"

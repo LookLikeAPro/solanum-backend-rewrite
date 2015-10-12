@@ -13,11 +13,13 @@ module.exports = function loadersByExtension(obj) {
 			extensions: exts,
 			test: extsToRegExp(exts)
 		};
-		if(Array.isArray(value)) {
+		if (Array.isArray(value)) {
 			entry.loaders = value;
-		} else if(typeof value === "string") {
+		}
+		else if (typeof value === "string") {
 			entry.loader = value;
-		} else {
+		}
+		else {
 			Object.keys(value).forEach(function(valueKey) {
 				entry[valueKey] = value[valueKey];
 			});
