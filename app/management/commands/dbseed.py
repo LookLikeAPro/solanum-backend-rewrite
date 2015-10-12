@@ -52,4 +52,9 @@ class Command(BaseCommand):
 			amount = i
 			vendor = models.Vendor.objects.get(name='shop'+str(int(math.floor(i/20))))
 			user = models.User.objects.get(name=str(int(math.floor(i/2))))
-			models.Transaction.objects.create(amount=amount, user=user, vendor=vendor).save()
+			transaction = models.Transaction.objects.create(amount=amount, user=user, vendor=vendor)
+			transaction.save()
+			for i in range(0, 3):
+				product = models.Product.objects.get(name='product1')
+				models.TransactionItem.objects.create(transaction=transaction, product=product, amount=1, count=1).save()
+

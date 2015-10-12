@@ -12,8 +12,10 @@ class byID(View):
 		transaction = Transaction.objects.filter(id=id).first()
 		if not transaction:
 			return JsonResponse({'error':{'message':'Transaction not found'}})
-		return JsonResponse({
-			'id': transaction.id,
-			'amount': transaction.amount,
-			'date': transaction.date
-		})
+		return JsonResponse(transaction.present())
+		# return JsonResponse({
+		# 	'id': transaction.id,
+		# 	'amount': transaction.amount,
+		# 	'date': transaction.date,
+		# 	'items':[1,2] #transaction.transactionitem_set.all()
+		# })
