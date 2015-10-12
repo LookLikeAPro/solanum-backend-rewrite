@@ -9,10 +9,14 @@ class TransactionItem(models.Model):
 		if ('fields' in kwargs):
 			returnFields = kwargs['fields']
 		else:
-			returnFields = ('id', 'amount', 'product')
+			returnFields = ('amount', 'count', 'product')
 		returnObj = {}
 		if 'id' in returnFields:
 			returnObj['id'] = self.id
 		if 'amount' in returnFields:
 			returnObj['amount'] = self.amount
+		if 'count' in returnFields:
+			returnObj['count'] = self.count
+		if 'product' in returnFields:
+			returnObj['product'] = self.product.present()
 		return returnObj

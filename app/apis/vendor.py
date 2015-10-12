@@ -1,18 +1,20 @@
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.generic import View
 from django.template import RequestContext, loader
 from django.shortcuts import render
+from app.models import Vendor
 
-
-class vendor(View):
+class bySlug(View):
 	def get(self, request, *args, **kwargs):
-		return HttpResponse("herro")
-	# def post(self, request, *args, **kwargs):
-	# 	template = loader.get_template('main.html')
-	# 	context = RequestContext(request, {"result": randomize()})
-	# 	return HttpResponse(template.render(context))
-		# def get(self, request, *args, **kwargs):
-		#     return HttpResponse("Hello, World")
+		slug = self.kwargs.get('slug', None)
+		if not slug:
+			return JsonResponse({'error':{'message':'Invalid Link'}})
+		try:
+			vendor = Vendor.objects.get(slug=slug)
+		except:
+			return JsonResponse({'error':{'message':'Invalid Link'}})
+		return JsonResponse(vendor.present())
 
-# def welcome(request):
-#     return HttpResponse("Hello, World")
+class nearby(View):
+	def get(self, request, *args, **kwargs):
+		return JsonResponse({'fuck':'you'})

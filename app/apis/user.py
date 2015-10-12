@@ -8,10 +8,7 @@ class current(View):
 		if not hasattr(request, 'user'):
 			return JsonResponse({'error':{'message':'Not logged in'}})
 		user = request.user
-		return JsonResponse({
-			"email": user.email,
-			"name": user.name
-		})
+		return JsonResponse(user.present())
 
 class byID(View):
 	def get(self, request, *args, **kwargs):
@@ -21,7 +18,4 @@ class byID(View):
 		user = User.objects.filter(id=id).first()
 		if not user:
 			return JsonResponse({'error':{'message':'User not found'}})
-		return JsonResponse({
-			'name':user.name,
-			'email':user.email,
-		})
+		return JsonResponse(user.present())

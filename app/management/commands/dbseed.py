@@ -26,10 +26,10 @@ class Command(BaseCommand):
 		for i in range(0, 20):
 			name = 'shop'+str(i)
 			email = 'shop'+str(i)+'@solanum.com'
-			link = 'shop'+str(i)
+			slug = 'shop'+str(i)
 			description = 'test'
 			phone_number = '111111'+str(i)
-			models.Vendor.objects.create(name=name, email=email, link=link, description=description, phone_number=phone_number, longitude=0, latitude=0, timezone=0).save()
+			models.Vendor.objects.create(name=name, email=email, slug=slug, description=description, phone_number=phone_number, longitude=0, latitude=0, timezone=0).save()
 
 	def seedVendorManagement(self):
 		#Do not use "Through" type ManyToMany if it is only two columns. This is more work.

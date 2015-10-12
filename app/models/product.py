@@ -11,3 +11,18 @@ class Product(models.Model):
 		('3', 'RMB'),
 	)
 	vendor = models.ForeignKey('Vendor')
+	def present(self, *args, **kwargs):
+		if ('fields' in kwargs):
+			returnFields = kwargs['fields']
+		else:
+			returnFields = ('id', 'name', 'description', 'price')
+		returnObj = {}
+		if 'id' in returnFields:
+			returnObj['id'] = self.id
+		if 'name' in returnFields:
+			returnObj['name'] = self.name
+		if 'description' in returnFields:
+			returnObj['description'] = self.description
+		if 'price' in returnFields:
+			returnObj['price'] = self.price
+		return returnObj
